@@ -113,15 +113,51 @@ def setSetting(id, value, _type_=None):
     return xbmcaddon.Addon().setSetting(id, value)
 
 
+#__get_settings__ = {
+#    bool: "getBool",
+#    int: "getInt",
+#    float: "getNumber",
+#    str: "getString"
+#}
+
+#def getSetting(id, _type_=None):
+#    if _type_ is not None:
+#        return getattr(
+#            xbmcaddon.Addon().getSettings(), __get_settings__[_type_]
+#        )(id)
+#    return xbmcaddon.Addon().getSetting(id)
+
+
+#__set_settings__ = {
+#    bool: "setBool",
+#    int: "setInt",
+#    float: "setNumber",
+#    str: "setString"
+#}
+
+#def setSetting(id, value, _type_=None):
+#    if _type_ is not None:
+#        return getattr(
+#            xbmcaddon.Addon().getSettings(), __set_settings__[_type_]
+#        )(id, value)
+#    return xbmcaddon.Addon().setSetting(id, value)
+
+
 # notify -----------------------------------------------------------------------
 
 ICONINFO = xbmcgui.NOTIFICATION_INFO
 ICONWARNING = xbmcgui.NOTIFICATION_WARNING
 ICONERROR = xbmcgui.NOTIFICATION_ERROR
 
+def __message__(message):
+    if isinstance(message, Exception):
+        return f"{message.__class__.__name__}: {message}"
+    return maybeLocalize(message)
+
+
 def notify(message, heading=getAddonName(), icon=getAddonIcon(), time=5000):
     xbmcgui.Dialog().notification(
-        maybeLocalize(heading), maybeLocalize(message), icon=icon, time=time
+        maybeLocalize(heading), __message__(message), icon=icon, time=time
     )
 
 
@@ -158,6 +194,7 @@ class Logger(object):
         notify(message, icon=__icons__[level])
 
     def __log__(self, message, level, notify=False):
+        message = __message__(message)
         xbmc.log(f"{self.__prefix__}{message}", level=level)
         if notify:
             self.__notify__(message, level)

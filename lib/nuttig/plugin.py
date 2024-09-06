@@ -38,8 +38,8 @@ def action(
             finally:
                 if directory:
                     self.endDirectory(success, cacheToDisc=cacheToDisc)
-                    if view:
-                        executeBuiltin("Container.SetViewMode", f"{view}")
+                if view:
+                    executeBuiltin("Container.SetViewMode", f"{view}")
                 self.__content__ = None
                 self.__category__ = None
                 self.action = None

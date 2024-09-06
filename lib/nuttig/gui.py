@@ -80,12 +80,14 @@ class ListItem(xbmcgui.ListItem):
         return super(ListItem, cls).__new__(cls, label=label, path=path)
 
     def __init__(
-        self, label, path, isFolder=False, isPlayable=True,
+        self, label, path, isFolder=False, isPlayable=True, properties=None,
         infoLabels=None, streamInfos=None, contextMenus=None, **art
     ):
         super(ListItem, self).__init__(label=label, path=path)
         self.setIsFolder(isFolder)
         self.setIsPlayable(False if isFolder else isPlayable)
+        if properties:
+            self.setProperties(properties)
         if infoLabels:
             self.setInfoLabels(infoLabels)
         if streamInfos:

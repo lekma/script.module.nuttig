@@ -2,9 +2,10 @@
 
 
 __all__ = [
-    "executeBuiltin", "executeJSONRPC",
+    "executeBuiltin", "executeJSONRPC", "getCondition", "getInfoLabel",
     "containerRefresh", "containerUpdate", "playMedia", "runScript",
-    "addFavourite", "getAddons", "addonInstalled", "addonEnabled"
+    "addFavourite", "getAddons", "addonInstalled", "addonEnabled",
+    "hasAddon", "addonIsEnabled"
 ]
 
 
@@ -47,6 +48,18 @@ def executeJSONRPC(method, **params):
     return response.get("result")
 
 
+# getCondition -----------------------------------------------------------------
+
+def getCondition(condition):
+    return xbmc.getCondVisibility(condition)
+
+
+# getInfoLabel -----------------------------------------------------------------
+
+def getInfoLabel(infotag):
+    return xbmc.getInfoLabel(infotag)
+
+
 # misc execute utils -----------------------------------------------------------
 
 # containerRefresh
@@ -80,3 +93,11 @@ def addonInstalled(addonid):
 # addonEnabled
 def addonEnabled(addonid):
     return (addonid in (addon["addonid"] for addon in getAddons(enabled=True)))
+
+# hasAddon
+def hasAddon(addonid):
+    return getCondition(f"System.HasAddon({addonid})")
+
+# addonIsEnabled
+def addonIsEnabled(addonid):
+    return getCondition(f"System.AddonIsEnabled({addonid})")
