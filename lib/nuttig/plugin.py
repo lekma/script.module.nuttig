@@ -19,8 +19,13 @@ __invalid_action__ = "Invalid action '{}'"
 # action -----------------------------------------------------------------------
 
 def action(
-    action=None, category=None, content=None,
-    directory=True, cacheToDisc=True, view=0
+    action=None,
+    category=None,
+    content=None,
+    directory=True,
+    updateListing=False,
+    cacheToDisc=True,
+    view=0
 ):
     def decorator(func):
         func.__action__ = True
@@ -28,21 +33,29 @@ def action(
         def wrapper(self, **kwargs):
             success = False
             try:
-                self.action = action or func.__name__
+                self.__action__ = action or func.__name__
                 self.__category__ = maybeLocalize(category)
                 self.__content__ = content
+                self.__updateListing__ = updateListing
+                self.__cacheToDisc__ = cacheToDisc
                 success = func(self, **kwargs)
             except Exception as error:
                 success = False
                 raise error
             finally:
                 if directory:
-                    self.endDirectory(success, cacheToDisc=cacheToDisc)
+                    self.endDirectory(
+                        success,
+                        updateListing=self.__updateListing__,
+                        cacheToDisc=self.__cacheToDisc__
+                    )
                 if view:
                     executeBuiltin("Container.SetViewMode", f"{view}")
+                self.__cacheToDisc__ = True
+                self.__updateListing__ = False
                 self.__content__ = None
                 self.__category__ = None
-                self.action = None
+                self.__action__ = None
         return wrapper
     return decorator
 
@@ -56,7 +69,7 @@ class Plugin(object):
         self.logger = Logger(component="plugin")
         self.url = url
         self.__handle__ = handle
-        self.action = None
+        self.__action__ = None
         self.__category__ = None
         self.__content__ = None
 

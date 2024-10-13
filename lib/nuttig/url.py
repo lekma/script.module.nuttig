@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 
-__all__ = ["parseQuery", "buildUrl"]
+__all__ = ["parseQuery", "buildUrl", "urlReplace"]
 
 
-from urllib.parse import parse_qsl, urlencode
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 
 # parseQuery -------------------------------------------------------------------
@@ -24,7 +24,7 @@ def parseValue(value):
 def parseQuery(query):
     return {
         k: parseValue(v)
-        for k, v in parse_qsl(query[1:] if query.startswith("?") else query)
+        for k, v in parse_qsl(query.lstrip("?"))
     }
 
 
@@ -33,3 +33,9 @@ def parseQuery(query):
 def buildUrl(*args, **kwargs):
     url = "/".join(args)
     return "?".join((url, urlencode(kwargs))) if kwargs else url
+
+
+#  urlReplace ------------------------------------------------------------------
+
+def urlReplace(url, **kwargs):
+    return urlunsplit(urlsplit(url)._replace(**kwargs))

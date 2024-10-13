@@ -76,14 +76,24 @@ def okDialog(message, heading=getAddonName()):
 
 class ListItem(xbmcgui.ListItem):
 
-    def __new__(cls, label, path, **kwargs):
-        return super(ListItem, cls).__new__(cls, label=label, path=path)
+    def __new__(cls, label, path, offscreen=True, **kwargs):
+        return super(ListItem, cls).__new__(
+            cls, label=label, path=path, offscreen=offscreen
+        )
 
     def __init__(
-        self, label, path, isFolder=False, isPlayable=True, properties=None,
-        infoLabels=None, streamInfos=None, contextMenus=None, **art
+        self,
+        label,
+        path,
+        offscreen=True,
+        isFolder=False,
+        isPlayable=True,
+        properties=None,
+        infoLabels=None,
+        streamInfos=None,
+        contextMenus=None,
+        **art
     ):
-        #super(ListItem, self).__init__(label=label, path=path)
         self.setIsFolder(isFolder)
         self.setIsPlayable(False if isFolder else isPlayable)
         if properties:
@@ -99,15 +109,15 @@ class ListItem(xbmcgui.ListItem):
 
     def setIsFolder(self, isFolder):
         super(ListItem, self).setIsFolder(isFolder)
-        #self.setProperty("IsFolder", str(isFolder).lower())
-        self.isFolder = isFolder
+        self.setProperty("IsFolder", str(isFolder).lower())
+        self.__folder__ = isFolder
 
     def setIsPlayable(self, isPlayable):
         self.setProperty("IsPlayable", str(isPlayable).lower())
-        self.isPlayable = isPlayable
+        self.__playable__ = isPlayable
 
     def asItem(self):
-        return (self.getPath(), self, self.isFolder)
+        return (self.getPath(), self, self.__folder__)
 
     # getInfoTag ---------------------------------------------------------------
 

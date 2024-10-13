@@ -5,7 +5,7 @@ __all__ = [
     "executeBuiltin", "executeJSONRPC", "getCondition", "getInfoLabel",
     "containerRefresh", "containerUpdate", "playMedia", "runScript",
     "addFavourite", "getAddons", "addonInstalled", "addonEnabled",
-    "hasAddon", "addonIsEnabled"
+    "hasAddon", "addonIsEnabled", "activateWindow"
 ]
 
 
@@ -17,7 +17,9 @@ import xbmc
 # executeBuiltin ---------------------------------------------------------------
 
 def executeBuiltin(function, *args, wait=False):
-    xbmc.executebuiltin(f"{function}({','.join(args)})", wait)
+    xbmc.executebuiltin(
+        f"{function}({','.join(str(arg) for arg in args)})", wait
+    )
 
 
 # executeJSONRPC ---------------------------------------------------------------
@@ -101,3 +103,7 @@ def hasAddon(addonid):
 # addonIsEnabled
 def addonIsEnabled(addonid):
     return getCondition(f"System.AddonIsEnabled({addonid})")
+
+# activateWindow
+def activateWindow(*args, **kwargs):
+    executeBuiltin("ActivateWindow", *args, **kwargs)
