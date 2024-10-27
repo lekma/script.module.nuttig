@@ -190,26 +190,26 @@ class Logger(object):
             f"{f'<{self.component}> ' if self.component else ''}"
         )
 
-    def __notify__(self, message, level):
-        notify(message, icon=__icons__[level])
+    def __notify__(self, message, level, time=5000):
+        notify(message, icon=__icons__[level], time=time)
 
-    def __log__(self, message, level, notify=False):
+    def __log__(self, message, level, notify=False, **kwargs):
         message = __message__(message)
         xbmc.log(f"{self.__prefix__}{message}", level=level)
         if notify:
-            self.__notify__(message, level)
+            self.__notify__(message, level, **kwargs)
 
     def debug(self, message):
         self.__log__(message, self.DEBUG)
 
-    def info(self, message, notify=False):
-        self.__log__(message, self.INFO, notify=notify)
+    def info(self, message, **kwarsgs):
+        self.__log__(message, self.INFO, **kwarsgs)
 
-    def warning(self, message, notify=False):
-        self.__log__(message, self.WARNING, notify=notify)
+    def warning(self, message, **kwarsgs):
+        self.__log__(message, self.WARNING, **kwarsgs)
 
-    def error(self, message, notify=False):
-        self.__log__(message, self.ERROR, notify=notify)
+    def error(self, message, **kwarsgs):
+        self.__log__(message, self.ERROR, **kwarsgs)
 
     def getLogger(self, component=""):
         if component == self.component:
