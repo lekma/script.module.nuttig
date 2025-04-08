@@ -170,7 +170,6 @@ LOGWARNING=xbmc.LOGWARNING
 LOGERROR=xbmc.LOGERROR
 
 __icons__ = {
-    LOGDEBUG: ICONINFO,
     LOGINFO: ICONINFO,
     LOGWARNING: ICONWARNING,
     LOGERROR: ICONERROR
@@ -200,8 +199,8 @@ class Logger(object):
         if notify:
             self.__notify__(message, level, **kwargs)
 
-    def debug(self, message, **kwarsgs):
-        self.__log__(message, self.DEBUG, **kwarsgs)
+    def debug(self, message):
+        self.__log__(message, self.DEBUG)
 
     def info(self, message, **kwarsgs):
         self.__log__(message, self.INFO, **kwarsgs)
