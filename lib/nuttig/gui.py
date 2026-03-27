@@ -4,9 +4,11 @@
 __all__ = [
     "getWindowId", "selectDialog", "inputDialog", "contextMenu",
     "browseDialog", "browseFiles", "infoDialog", "yesnoDialog",
-    "okDialog", "ListItem"
+    "okDialog", "busyDialog", "ListItem"
 ]
 
+
+from contextlib import contextmanager
 
 import xbmc, xbmcgui
 
@@ -70,6 +72,17 @@ def yesnoDialog(message, heading=getAddonName(), **kwargs):
 
 def okDialog(message, heading=getAddonName()):
     return xbmcgui.Dialog().ok(maybeLocalize(heading), message)
+
+
+# busy -------------------------------------------------------------------------
+
+@contextmanager
+def busyDialog():
+    xbmc.executebuiltin("ActivateWindow(busydialognocancel)")
+    try:
+        yield
+    finally:
+        xbmc.executebuiltin("Dialog.Close(busydialognocancel)")
 
 
 # listitem ---------------------------------------------------------------------
