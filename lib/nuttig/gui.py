@@ -8,8 +8,6 @@ __all__ = [
 ]
 
 
-from contextlib import contextmanager
-
 import xbmc, xbmcgui
 
 from .addon import (
@@ -76,13 +74,30 @@ def okDialog(message, heading=getAddonName()):
 
 # busy -------------------------------------------------------------------------
 
-@contextmanager
-def busyDialog():
-    xbmc.executebuiltin("ActivateWindow(busydialognocancel)")
-    try:
-        yield
-    finally:
+class busyDialog(object):
+
+    def __init__(self):
+        xbmc.executebuiltin("ActivateWindow(busydialognocancel)")
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        self.close()
+
+    def close(self):
         xbmc.executebuiltin("Dialog.Close(busydialognocancel)")
+
+
+#from contextlib import contextmanager
+
+#@contextmanager
+#def busyDialog():
+#    xbmc.executebuiltin("ActivateWindow(busydialognocancel)")
+#    try:
+#        yield
+#    finally:
+#        xbmc.executebuiltin("Dialog.Close(busydialognocancel)")
 
 
 # listitem ---------------------------------------------------------------------
