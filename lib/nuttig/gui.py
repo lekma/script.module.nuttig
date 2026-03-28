@@ -89,17 +89,6 @@ class busyDialog(object):
         xbmc.executebuiltin("Dialog.Close(busydialognocancel)")
 
 
-#from contextlib import contextmanager
-
-#@contextmanager
-#def busyDialog():
-#    xbmc.executebuiltin("ActivateWindow(busydialognocancel)")
-#    try:
-#        yield
-#    finally:
-#        xbmc.executebuiltin("Dialog.Close(busydialognocancel)")
-
-
 # listitem ---------------------------------------------------------------------
 
 class ListItem(xbmcgui.ListItem):
