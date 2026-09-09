@@ -5,9 +5,10 @@ __all__ = [
     "executeBuiltin", "executeJSONRPC", "getCondition", "getInfoLabel",
     "containerRefresh", "containerUpdate", "playMedia", "runScript",
     "addFavourite", "getAddons", "addonInstalled", "addonEnabled",
-    "hasAddon", "addonIsEnabled", "activateWindow", "getApplicationProperty",
-    "getKodiVersion", "getKodiName", "getKodiVolume", "setKodiVolume",
-    "getKodiMuted", "getKodiLanguage", "getKodiSetting", "setKodiSetting"
+    "hasAddon", "addonIsEnabled", "activateWindow", "replaceWindow",
+    "getApplicationProperty", "getKodiVersion", "getKodiName", "getKodiVolume",
+    "setKodiVolume", "getKodiMuted", "getKodiLanguage", "getKodiSetting",
+    "setKodiSetting"
 ]
 
 
@@ -115,6 +116,10 @@ def addonIsEnabled(addonid):
 # activateWindow
 def activateWindow(*args, **kwargs):
     executeBuiltin("ActivateWindow", *args, **kwargs)
+
+# replaceWindow
+def replaceWindow(*args, **kwargs):
+    executeBuiltin("ReplaceWindow", *args, **kwargs)
 
 # getApplicationProperty
 def getApplicationProperty(name):

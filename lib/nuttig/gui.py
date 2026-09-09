@@ -2,9 +2,9 @@
 
 
 __all__ = [
-    "getWindowId", "selectDialog", "inputDialog", "contextMenu",
-    "browseDialog", "browseFiles", "infoDialog", "yesnoDialog",
-    "okDialog", "busyDialog", "ListItem"
+    "getWindowId", "getWindow", "selectDialog", "inputDialog", "contextMenu",
+    "browseDialog", "browseFiles", "infoDialog", "yesnoDialog", "okDialog",
+    "busyDialog", "ListItem"
 ]
 
 
@@ -19,6 +19,12 @@ from .addon import (
 
 def getWindowId():
     return xbmcgui.getCurrentWindowId()
+
+
+# getWindow --------------------------------------------------------------------
+
+def getWindow(id=None):
+    return xbmcgui.Window(id or xbmcgui.getCurrentWindowId())
 
 
 # select -----------------------------------------------------------------------
